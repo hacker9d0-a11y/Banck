@@ -2,65 +2,103 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil</title>
   <style>
-    body { background-color: #0d0d0d; color: white; font-family: sans-serif; text-align: center; }
-    
-    .btn-follow {
-      background-color: #fe2c55;
-      color: white;
-      border: none;
-      padding: 10px 40px;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 4px;
-      cursor: pointer;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Modal emergente */
+    body {
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      font-family: sans-serif;
+    }
+
+    /* Contenedor principal ajustado al tamaño móvil */
+    .pantalla-perfil {
+      position: relative;
+      width: 100%;
+      max-width: 430px; /* Ancho de pantalla móvil */
+    }
+
+    /* Tu captura de pantalla como imagen visible */
+    .pantalla-perfil img.fondo-imagen {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Botón invisible posicionado exactamente sobre el botón "Seguir" de la imagen */
+    .boton-interactivo-seguir {
+      position: absolute;
+      top: 28%;   /* Ajuste de posición vertical */
+      left: 24%;  /* Ajuste de posición horizontal */
+      width: 39%; /* Ancho del botón */
+      height: 4.5%; /* Alto del botón */
+      background: transparent; /* Transparente para que solo se vea la imagen */
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .boton-interactivo-seguir:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Ventana emergente flotante */
     .modal {
-      display: none; /* Oculto por defecto */
+      display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0, 0, 0, 0.85);
       justify-content: center;
       align-items: center;
+      z-index: 9999;
     }
 
-    .modal-content {
+    .modal-contenido {
       background: #1e1e1e;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 12px;
       position: relative;
       width: 90%;
       max-width: 400px;
     }
 
-    .close-btn {
+    .boton-cerrar {
       position: absolute;
-      top: 10px; right: 15px;
+      top: 10px;
+      right: 15px;
       color: white;
-      font-size: 20px;
+      font-size: 24px;
       cursor: pointer;
     }
 
     iframe {
       width: 100%;
-      height: 350px;
+      height: 380px;
       border: none;
     }
   </style>
 </head>
 <body>
 
-  <h2>@carlitooamarante68</h2>
-  
-  <button class="btn-follow" onclick="abrirFormulario()">Seguir</button>
+  <div class="pantalla-perfil">
+    <img src="IMG_1108.jpeg" alt="Perfil" class="fondo-imagen">
+
+    <button class="boton-interactivo-seguir" onclick="abrirFormulario()"></button>
+  </div>
 
   <div id="modalFormulario" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="cerrarFormulario()">&times;</span>
+    <div class="modal-contenido">
+      <span class="boton-cerrar" onclick="cerrarFormulario()">&times;</span>
       <iframe src="formulario.html"></iframe>
     </div>
   </div>

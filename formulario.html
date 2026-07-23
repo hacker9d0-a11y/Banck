@@ -117,24 +117,5 @@ textarea {
 </button>
   </form>
 </div>
-  <script>
-const formulario = document.querySelector("form");
-
-formulario.addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  const datos = new FormData(formulario);
-
-  await fetch(formulario.action, {
-    method: "POST",
-    body: datos,
-    headers: {
-      "Accept": "application/json"
-    }
-  });
-
-  // No muestra "Gracias" ni cambia de página.
-});
-</script>
 </body>
 </html>
